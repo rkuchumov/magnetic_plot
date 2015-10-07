@@ -32,7 +32,7 @@ plotSamples <- function(samples, xscale = 1, tscale = 1) {
 		 col    = 'grey')
 
 	title(main = 'Измеренные данные', line = 3)
-	title(ylab = 'Значение', line = 3.5)
+	title(ylab = 'Значение', line = 4)
 	title(xlab = 'Пикет', line = 2)
 
 	box()
@@ -51,11 +51,11 @@ plotVariation <- function(variation) {
 		 yaxs = 'i',
 		 xaxs = 'i')
 
-	axis(side = 1,
-		 at   = xtics,
-		 labels  = strftime(variation$timestamps, "%H:%M:%S"),
+	axis(side   = 1,
+		 at     = xtics,
+		 labels = strftime(variation$timestamps, "%H:%M:%S"),
 		 tck    = -0.04,
-		 las  = 1)
+		 las    = 1)
 
 	axis(side   = 2,
 		 tck    = 1,
@@ -63,7 +63,7 @@ plotVariation <- function(variation) {
 		 col    = 'grey')
 
 	title(main = 'Вариация', line = 1)
-	title(ylab = 'Значение', line = 3.5)
+	title(ylab = 'Значение', line = 4)
 	title(xlab = 'Время', line = 2)
 
 	box()

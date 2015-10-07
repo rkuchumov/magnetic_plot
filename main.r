@@ -1,5 +1,7 @@
+source('locale.r')
 source('input.r')
 source('plots.r')
+source('gui.r')
 
 calcDiff <- function(samples, variation) {
 	diff <- samples
@@ -13,8 +15,8 @@ calcDiff <- function(samples, variation) {
 
 samples <- readSamples('cal.txt')
 variation <- readVariation('var.txt')
-
-initPlots()
-plotSamples(samples)
-plotVariation(variation)
-plotDiff(calcDiff(samples, variation))
+# 
+# initPlots()
+# plotSamples(samples)
+# plotVariation(variation)
+# plotDiff(calcDiff(samples, variation))
