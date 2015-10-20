@@ -1,24 +1,25 @@
 library(gWidgets)
 library(gWidgetsRGtk2)
 
-win <- gwindow(
+window <- gwindow(
 	title  = msg$winTitle,
 	width  = 500,
 	height = 180,
 )
 
-statusBar <- gstatusbar("", container = win)
+statusBar <- gstatusbar(container = window)
 
-winGrp <- ggroup(
-	container = win,
-	horizontal = FALSE)
+windowGroup <- ggroup(
+	container = window,
+	horizontal = FALSE
+)
 
-tbl <- glayout(container = winGrp)
-tbl[1,1, anchor = c(1, 0)] <- msg$samplesLbl
-tbl[1,2, expand = T] <- gedit(container = tbl)
-tbl[1,3] <- gbutton(
+ctrlLayout <- glayout(container = windowGroup)
+
+samplesEdit <- gedit(container = ctrlLayout)
+samplesButton <- gbutton(
 	text      = msg$openBtn,
-	container = tbl,
+	container = ctrlLayout,
 	handler   = function(h, ...)
 	{
 		gfile(
@@ -27,8 +28,7 @@ tbl[1,3] <- gbutton(
 			multi   = FALSE,
 			handler = function(h, ...)
 			{
-				tmp <- tbl[1,2]
-				svalue(tmp) <- h$file
+				svalue(samplesEdit) <- h$file
 				svalue(statusBar) <- ''
 			},
 			filter = list(
@@ -39,11 +39,10 @@ tbl[1,3] <- gbutton(
 	}
 )
 
-tbl[2,1, anchor = c(1, 0)] <- msg$variationLbl
-tbl[2,2, expand = T] <- gedit(container = tbl)
-tbl[2,3] <- gbutton(
+variationEdit <- gedit(container = ctrlLayout)
+variationButton <- gbutton(
 	text      = msg$openBtn,
-	container = tbl,
+	container = ctrlLayout,
 	handler   = function(h, ...)
 	{
 		gfile(
@@ -51,8 +50,7 @@ tbl[2,3] <- gbutton(
 			type    = "open",
 			handler = function(h, ...)
 			{
-				tmp <- tbl[2,2]
-				svalue(tmp) <- h$file
+				svalue(variationEdit) <- h$file
 				svalue(statusBar) <- ''
 			},
 			filter = list(
@@ -63,79 +61,61 @@ tbl[2,3] <- gbutton(
 	}
 )
 
-tbl[3, 2:3, anchor = c(-1, 0)] <- gcheckbox(
+decimalCheckbox <- gcheckbox(
 	text      = msg$decDelimLbl,
 	checked   = unname(Sys.localeconv()["decimal_point"] == ","),
-	container = tbl
+	container = ctrlLayout
 )
 
-tbl[4, 1] <- ggroup(container = tbl)
+drawButtonGroup <- ggroup(container = ctrlLayout)
+addSpring(drawButtonGroup)
+
 drawBtn <- gbutton(
 	text      = msg$drawBtn,
-	container = tbl[4,1],
+	container = drawButtonGroup,
 	handler   = function(h, ...)
 	{
-		if (svalue(tbl[3,2]))
+		if (svalue(decimalCheckbox))
 			dec <- ','
 		else
 			dec <- '.'
 
-		ok <- TRUE
-
-		samplesPath <- svalue(tbl[1,2])
-		if (samplesPath == '') {
-			# TODO
-			svalue(statusBar) <- 'Samples are not set'
-			return()
-		}
-
 		tryCatch(
 			{
+				samplesPath <- svalue(samplesEdit)
 				samples <- readSamples(samplesPath, dec)
-			},
-			error = function(e) {
-				svalue(statusBar) <- paste(msg$readError, samplesPath)
-				print(e)
-				ok <<- FALSE
-			}
-		)
 
-		if (!ok)
-			return()
-
-		print(ok)
-		variationPath <- svalue(tbl[2,2])
-		if (variationPath == '') {
-			# TODO
-			svalue(statusBar) <- 'variationPath not set'
-			return()
-		}
-		tryCatch(
-			{
+				variationPath <- svalue(variationEdit)
 				variation <- readVariation(variationPath, dec)
+
+				size(window) <- c(700, 700)
+
+				if (dev.cur() == 2)
+					graphics.off()
+
+				visible(window) <- F
+				ggraphics(container = windowGroup, expand = T)
+				visible(window) <- T
+
+				drawPlots(samples, variation)
 			},
 			error = function(e) {
-				svalue(statusBar) <- paste(msg$readError, variationPath)
+				# TODO: print error message in statusbar
+				svalue(statusBar) <- msg$readError
 				print(e)
-				ok <<- FALSE
 			}
 		)
-
-		if (!ok)
-			return()
-
-		size(win) <- c(800, 700)
-
-
-		add(winGrp, ggraphics())
-		plotDev <- dev.cur()
-		dev.set(plotDev)
-
-		initPlots()
-		plotSamples(samples)
-		plotVariation(variation)
-		plotDiff(calcDiff(samples, variation))
 	}
 )
-addSpring(tbl[4, 1])
 
+ctrlLayout[1,1, anchor = c(1, 0)] <- msg$samplesLbl
+ctrlLayout[1,2, expand = T] <- samplesEdit
+ctrlLayout[1,3] <- samplesButton
+
+ctrlLayout[2,1, anchor = c(1, 0)] <- msg$variationLbl
+ctrlLayout[2,2, expand = T] <- variationEdit
+ctrlLayout[2,3] <- variationButton
+
+ctrlLayout[3, 2:3, anchor = c(-1, 0)] <- decimalCheckbox
+
+ctrlLayout[4, 1] <- drawButtonGroup 

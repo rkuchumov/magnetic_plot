@@ -16,7 +16,7 @@ plotSamples <- function(samples, xscale = 1, tscale = 1) {
 
 	axis(side = 1,
 		 at   = seq(min(samples$pickets), max(samples$pickets), by = 1),
-		 tck    = -0.04,
+		 tck  = -0.04,
 		 las  = 1)
 
 	tTicksId = seq(1, length(samples$pickets), tscale)
@@ -31,9 +31,9 @@ plotSamples <- function(samples, xscale = 1, tscale = 1) {
 		 las    = 2,
 		 col    = 'grey')
 
-	title(main = 'Измеренные данные', line = 3)
-	title(ylab = 'Значение', line = 4)
-	title(xlab = 'Пикет', line = 2)
+	title(main = msg$samplesPlotTitle, line = 3)
+	title(ylab = msg$samplesPlotYLable, line = 4)
+	title(xlab = msg$samplesPlotXLable, line = 2)
 
 	box()
 }
@@ -62,9 +62,9 @@ plotVariation <- function(variation) {
 		 las    = 2,
 		 col    = 'grey')
 
-	title(main = 'Вариация', line = 1)
-	title(ylab = 'Значение', line = 4)
-	title(xlab = 'Время', line = 2)
+	title(main = msg$variationPlotTitle, line = 1)
+	title(ylab = msg$variationPlotYLable, line = 4)
+	title(xlab = msg$variationPlotXLable, line = 2)
 
 	box()
 }
@@ -83,7 +83,7 @@ plotDiff <- function(diff, xscale = 1, tscale = 1) {
 
 	axis(side = 1,
 		 at   = seq(min(diff$pickets), max(diff$pickets), by = 1),
-		 tck    = -0.04,
+		 tck  = -0.04,
 		 las  = 1)
 
 	tTicksId = seq(1, length(diff$pickets), tscale)
@@ -98,10 +98,26 @@ plotDiff <- function(diff, xscale = 1, tscale = 1) {
 		 las    = 2,
 		 col    = 'grey')
 
-	title(main = 'Выходные данные', line = 3)
-	title(ylab = 'Аномальные значения', line = 4)
-	title(xlab = 'Пикет', line = 2)
+	title(main = msg$diffPlotTitle, line = 3)
+	title(ylab = msg$diffPlotYLable, line = 4)
+	title(xlab = msg$diffPlotXLable, line = 2)
 
 	box()
 }
 
+calcDiff <- function(samples, variation) {
+	diff <- samples
+	diff$values <- mapply(function(value, timestamp) {
+		i <- which.min(abs(variation$timestamps - timestamp))
+		return(value - variation[i,2])
+	}, samples$values, samples$timestamps)
+
+	return(diff)
+}
+
+drawPlots <- function(samples, variation) {
+	initPlots()
+	plotSamples(samples)
+	plotVariation(variation)
+	plotDiff(calcDiff(samples, variation))
+}
