@@ -1,8 +1,8 @@
-initPlots <- function() {
+InitPlots <- function() {
 	par(mfrow = c(3, 1))
 }
 
-plotSamples <- function(samples, xscale = 1, tscale = 1) {
+PlotSamples <- function(samples, xscale = 1, tscale = 1) {
 	par(mar   = c(3, 5, 4, 2))
 
 	plot(samples$pickets, samples$values,
@@ -38,7 +38,7 @@ plotSamples <- function(samples, xscale = 1, tscale = 1) {
 	box()
 }
 
-plotVariation <- function(variation) {
+PlotVariation <- function(variation) {
 	par(mar   = c(5, 5, 4, 2))
 
 	xtics = 1:length(variation$values)
@@ -69,7 +69,7 @@ plotVariation <- function(variation) {
 	box()
 }
 
-plotDiff <- function(diff, xscale = 1, tscale = 1) {
+PlotDiff <- function(diff, xscale = 1, tscale = 1) {
 	par(mar   = c(3, 5, 4, 2))
 
 	plot(diff$pickets, diff$values,
@@ -105,19 +105,18 @@ plotDiff <- function(diff, xscale = 1, tscale = 1) {
 	box()
 }
 
-calcDiff <- function(samples, variation) {
+DrawPlots <- function(samples, variation) {
+	samples <- samples[order(samples$pickets),]
+
 	diff <- samples
 	diff$values <- mapply(function(value, timestamp) {
 		i <- which.min(abs(variation$timestamps - timestamp))
-		return(value - variation[i,2])
+		return(value - variation[i, 2])
 	}, samples$values, samples$timestamps)
 
-	return(diff)
-}
+	InitPlots()
 
-drawPlots <- function(samples, variation) {
-	initPlots()
-	plotSamples(samples)
-	plotVariation(variation)
-	plotDiff(calcDiff(samples, variation))
+	PlotSamples(samples)
+	PlotVariation(variation)
+	PlotDiff(diff)
 }
