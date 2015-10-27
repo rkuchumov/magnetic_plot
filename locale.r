@@ -19,25 +19,35 @@ msg <- list(
 	diffPlotXLable      = 'Pickets'
 )
 
-if (Sys.getenv('LANG') == 'ru_RU.UTF-8') {
-	msg <- list(
-		winTitle            = 'Графики магнитного поля',
-		samplesLbl          = 'Измеренные данные:',
-		openBtn             = 'Открыть',
-		openSamplesDialog   = 'Выбирете файл со измеренными данными',
-		variationLbl        = 'Вариация:',
-		openVariationDialog = 'Выбирете файл со значениями вариации',
-		decDelimLbl         = 'Использовать запятую для разделения разрядов',
-		drawBtn             = 'Построить графики',
-		readError           = 'Не могу построить графики для указаных файлов',
-		samplesPlotTitle    = 'Измеренные данных',
-		samplesPlotYLable   = 'Значение',
-		samplesPlotXLable   = 'Пикет',
-		variationPlotTitle  = 'Вариация',
-		variationPlotYLable = 'Значение',
-		variationPlotXLable = 'Время',
-		diffPlotTitle       = 'Выходные данные',
-		diffPlotYLable      = 'Аномальные значения',
-		diffPlotXLable      = 'Пикет'
-	)
+msgRu <- list(
+	winTitle            = 'Графики магнитного поля',
+	samplesLbl          = 'Измеренные данные:',
+	openBtn             = 'Открыть',
+	openSamplesDialog   = 'Выбирете файл со измеренными данными',
+	variationLbl        = 'Вариация:',
+	openVariationDialog = 'Выбирете файл со значениями вариации',
+	decDelimLbl         = 'Использовать запятую для разделения разрядов',
+	drawBtn             = 'Построить графики',
+	readError           = 'Не могу построить графики для указаных файлов',
+	samplesPlotTitle    = 'Измеренные данных',
+	samplesPlotYLable   = 'Значение',
+	samplesPlotXLable   = 'Пикет',
+	variationPlotTitle  = 'Вариация',
+	variationPlotYLable = 'Значение',
+	variationPlotXLable = 'Время',
+	diffPlotTitle       = 'Выходные данные',
+	diffPlotYLable      = 'Аномальные значения',
+	diffPlotXLable      = 'Пикет'
+)
+
+if (.Platform$OS.type == 'windows') {
+	tryCatch({
+		Sys.setlocale('LC_ALL', 'rus')
+		msg <- msgRu
+	},
+	warning = function(e) {
+		print(e)
+	})
+} else if (Sys.getenv('LANG') == 'ru_RU.UTF-8') {
+	msg <- msgRu
 }

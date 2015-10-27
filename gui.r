@@ -1,7 +1,12 @@
 library(gWidgets)
-library(gWidgetsRGtk2)
 
-options(guiToolkit="RGtk2")
+if (.Platform$OS.type == 'windows') {
+	library(gWidgetstcltk)
+	options(guiToolkit="tcltk")
+} else {
+	library(gWidgetsRGtk2)
+	options(guiToolkit="RGtk2")
+}
 
 gui <- new.env()
 
@@ -96,19 +101,24 @@ StartGUI <- function() {
 					variationPath <- svalue(gui$variationEdit)
 					variation <- ReadVariation(variationPath, dec)
 
-					size(gui$window) <- c(700, 700)
-
 					if (dev.cur() == 2)
 						graphics.off()
 
-					visible(gui$window) <- FALSE
-					ggraphics(container = gui$windowGroup, expand = TRUE)
-					visible(gui$window) <- TRUE
+					if (.Platform$OS.type == 'windows') {
+						windows();
+					} else {
+						size(gui$window) <- c(700, 700)
+
+						visible(gui$window) <- FALSE
+						ggraphics(container = gui$windowGroup, expand = TRUE)
+						visible(gui$window) <- TRUE
+					}
 
 					DrawPlots(samples, variation)
 				},
 				error = function(e) {
 					# TODO: print error message in statusbar
+					# TODO: ptint in stderr
 					svalue(gui$statusBar) <- msg$readError
 					print(e)
 				}
