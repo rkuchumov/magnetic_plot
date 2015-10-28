@@ -1,4 +1,4 @@
-source('locale.r', encoding='utf8')
+source('locale.r')
 source('input.r')
 source('plots.r')
 source('gui.r')

@@ -21,6 +21,7 @@ StartGUI <- function() {
 	)
 
 	gui$statusBar <- gstatusbar(container = gui$window)
+	svalue(gui$statusBar) <- msg$readyStatus
 
 	gui$windowGroup <- ggroup(
 		container = gui$window,
@@ -39,6 +40,7 @@ StartGUI <- function() {
 				text    = msg$openSamplesDialog,
 				type    = "open",
 				multi   = FALSE,
+				initialfilename = '', #Fixes error message when user press Cancel
 				handler = function(h, ...)
 				{
 					svalue(gui$samplesEdit) <- h$file
@@ -61,6 +63,7 @@ StartGUI <- function() {
 			gfile(
 				text    = msg$openVariationDialog,
 				type    = "open",
+				initialfilename = '', #Fixes error message when user press Cancel
 				handler = function(h, ...)
 				{
 					svalue(gui$variationEdit) <- h$file

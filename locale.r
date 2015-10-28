@@ -16,7 +16,8 @@ msg <- list(
 	variationPlotXLable = 'Time',
 	diffPlotTitle       = 'Output data',
 	diffPlotYLable      = 'Anomaly values',
-	diffPlotXLable      = 'Pickets'
+	diffPlotXLable      = 'Pickets',
+	readyStatus         = 'Select samples and variation files to draw a plot'
 )
 
 msgRu <- list(
@@ -28,7 +29,7 @@ msgRu <- list(
 	openVariationDialog = 'Выбирете файл со значениями вариации',
 	decDelimLbl         = 'Использовать запятую для разделения разрядов',
 	drawBtn             = 'Построить графики',
-	readError           = 'Не могу построить графики для указаных файлов',
+	readError           = 'Не могу построить графики для указаных файлов, (см. run.log)',
 	samplesPlotTitle    = 'Измеренные данных',
 	samplesPlotYLable   = 'Значение',
 	samplesPlotXLable   = 'Пикет',
@@ -37,17 +38,21 @@ msgRu <- list(
 	variationPlotXLable = 'Время',
 	diffPlotTitle       = 'Выходные данные',
 	diffPlotYLable      = 'Аномальные значения',
-	diffPlotXLable      = 'Пикет'
+	diffPlotXLable      = 'Пикет',
+	readyStatus         = 'Выбирите файлы с измеренными данными и вариацией для постороения графиков'
 )
 
-if (.Platform$OS.type == 'windows') {
-	tryCatch({
-		Sys.setlocale('LC_ALL', 'rus')
-		msg <- msgRu
-	},
-	warning = function(e) {
-		print(e)
-	})
-} else if (Sys.getenv('LANG') == 'ru_RU.UTF-8') {
+# XXX: labes with russian text are ugly in windows
+# if (.Platform$OS.type == 'windows') {
+	# tryCatch({
+	# 	Sys.setlocale('LC_ALL', 'rus')
+	# 	msg <- msgRu
+	# },
+	# warning = function(e) {
+	# 	print(e)
+	# })
+# } else 
+
+if (.Platform$OS.type == 'unix' && Sys.getenv('LANG') == 'ru_RU.UTF-8') {
 	msg <- msgRu
 }
