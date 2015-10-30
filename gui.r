@@ -120,9 +120,7 @@ StartGUI <- function() {
 					DrawPlots(samples, variation)
 				},
 				error = function(e) {
-					# TODO: print error message in statusbar
-					# TODO: ptint in stderr
-					svalue(gui$statusBar) <- msg$readError
+					svalue(gui$statusBar) <- geterrmessage()
 					print(e)
 				}
 			)

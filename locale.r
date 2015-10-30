@@ -17,7 +17,9 @@ msg <- list(
 	diffPlotTitle       = 'Output data',
 	diffPlotYLable      = 'Anomaly values',
 	diffPlotXLable      = 'Pickets',
-	readyStatus         = 'Select samples and variation files to draw a plot'
+	readyStatus         = 'Select samples and variation files to draw a plot',
+	noSamples           = 'Samples file is not set',
+	noVariation         = 'Variation file is not set'
 )
 
 msgRu <- list(
@@ -39,7 +41,9 @@ msgRu <- list(
 	diffPlotTitle       = 'Выходные данные',
 	diffPlotYLable      = 'Аномальные значения',
 	diffPlotXLable      = 'Пикет',
-	readyStatus         = 'Выбирите файлы с измеренными данными и вариацией для постороения графиков'
+	readyStatus         = 'Выбирите файлы с измеренными данными и вариацией для постороения графиков',
+	noSamples           = 'Файл с отсчетами не выбран',
+	noVariation         = 'Файл с вариацией не выбран'
 )
 
 # XXX: labes with russian text are ugly in windows

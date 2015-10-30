@@ -17,7 +17,7 @@ End If
 strRopts          = "--vanilla"
 srtRScriptFile    = "main.r"
 strOutfile        = "run.log" 
-srtCommand        = chr(34) & strRexe & chr(34) & " " & strRopts & " " & srtRScriptFile & " 1>" & srtOutfile & " 2>nul"
+srtCommand        = chr(34) & strRexe & chr(34) & " " & strRopts & " " & srtRScriptFile & " 1>" & strOutfile & " 2>nul"
 
 intWindowStyle = 0
 bWaitOnReturn  = False

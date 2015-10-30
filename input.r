@@ -1,5 +1,5 @@
 ReadSamples <- function(samplesFile, decimalDelim = ',') {
-	if (samplesFile == '')
+	if (is.null(samplesFile) || samplesFile == '')
 		stop(msg$noSamples)
 
 	samples <- read.table(samplesFile, dec = decimalDelim)
@@ -13,7 +13,7 @@ ReadSamples <- function(samplesFile, decimalDelim = ',') {
 }
 
 ReadVariation <- function(variationFile, decimalDelim = ',') {
-	if (variationFile == '')
+	if (is.null(variationFile) || variationFile == '')
 		stop(msg$noVariation)
 
 	variation <- read.table(variationFile, dec = decimalDelim)
