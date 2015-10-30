@@ -1,10 +1,25 @@
-Rexe           = "Rscript.exe"
-Ropts          = "--vanilla --no-Rconsole"
-RScriptFile    = "main.r"
-Outfile        = "run.log" 
-Command        = Rexe & " " & Ropts & " " & RScriptFile & " 1>nul " & " 2> " & Outfile
+Set oWShell = Wscript.CreateObject("WScript.Shell")
+R_HOME = oWShell.ExpandEnvironmentStrings("%R_HOME%")
 
-intWindowStyle = 0     ' Hide the window and activate another window.'
-bWaitOnReturn  = False ' continue running script after launching R   '
+if R_HOME = "%R_HOME%" Then
+	Wscript.Echo "R_HOME environment variable is not set"
+	Wscript.Quit
+End If
 
-CreateObject("Wscript.Shell").Run Command, intWindowStyle, bWaitOnReturn
+strRexe           = R_HOME & "\bin\Rscript.exe"
+
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+If not(objFSO.FileExists(strRexe)) Then
+    Wscript.Echo "Can't find " & strRexe
+	Wscript.Quit
+End If
+
+strRopts          = "--vanilla"
+srtRScriptFile    = "main.r"
+strOutfile        = "run.log" 
+srtCommand        = chr(34) & strRexe & chr(34) & " " & strRopts & " " & srtRScriptFile & " 1>" & srtOutfile & " 2>nul"
+
+intWindowStyle = 0
+bWaitOnReturn  = False
+
+oWShell.Run srtCommand, intWindowStyle, bWaitOnReturn

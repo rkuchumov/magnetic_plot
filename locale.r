@@ -1,5 +1,5 @@
 msg <- list(
-	winTitle            = 'Magnitic field plots',
+	winTitle            = 'Magnetic field plots',
 	samplesLbl          = 'Samples:',
 	openBtn             = 'Open',
 	openSamplesDialog   = 'Open file wiht samples data',
